@@ -17,7 +17,7 @@ st.sidebar.markdown("---")
 # ================================================================
 
 st.set_page_config(page_title="Iris ML Predictor", page_icon="🌸")
-st.title("🌸 ทำนายสายพันธุ์ดอกไม้ Iris")
+st.title(" ทำนายสายพันธุ์ดอกไม้ Iris")
 
 @st.cache_resource
 def load_models():
@@ -27,7 +27,6 @@ def load_models():
         'SVM': joblib.load('model_SVM.pkl'),
         'Logistic Regression': joblib.load('model_Logistic_Regression.pkl'),
         'Random Forest': joblib.load('model_Random_Forest.pkl'),
-        # แก้ตรงนี้: เปลี่ยนชื่อไฟล์ให้ตรงกับที่มีใน GitHub
         'K-Means': joblib.load('model_summary.pkl') 
     }
     return m, joblib.load('scaler.pkl')
@@ -51,11 +50,12 @@ with c2:
 if st.button("🔮 ทำนายผล", type="primary"):
     inp = np.array([[sl, sw, pl, pw]])
     
-    # เช็คว่าโมเดลไหนต้องใช้ Scaler
-    if selected in ['SVM', 'Logistic Regression', 'K-Means']:
+    # แก้ตรงนี้: เอา K-Means ออก เพราะโมเดลนี้น่าจะใช้ข้อมูลดิบ
+    if selected in ['SVM', 'Logistic Regression']:
         inp_s = scaler.transform(inp)
         pred = models[selected].predict(inp_s)
     else:
+        # K-Means, KNN, Decision Tree, Random Forest ใช้ข้อมูลดิบ (inp)
         pred = models[selected].predict(inp)
         
     res = pred[0]
