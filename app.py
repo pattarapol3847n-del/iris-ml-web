@@ -7,8 +7,10 @@ import joblib
 st.sidebar.markdown("---")
 st.sidebar.image("my_photo.jpg", width=150) # แสดงรูปที่อัปโหลดไว้
 st.sidebar.info("""
-**ผู้พัฒนา:** ภัทรพล แก้วแท้
-**รหัสนักศึกษา:** 664245029
+**ผู้พัฒนา:** ภัทรพล แก้วแท้ รหัส
+
+**นักศึกษา:** 664245029
+
 **หมู่เรียน:** 66/43
 """)
 st.sidebar.markdown("---")
