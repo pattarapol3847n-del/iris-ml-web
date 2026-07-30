@@ -16,7 +16,7 @@ st.sidebar.info("""
 st.sidebar.markdown("---")
 # ================================================================
 
-st.set_page_config(page_title="Iris ML Predictor", page_icon="")
+st.set_page_config(page_title="Iris ML Predictor", page_icon="🌸")
 st.title("🌸 ทำนายสายพันธุ์ดอกไม้ Iris")
 
 @st.cache_resource
@@ -27,14 +27,15 @@ def load_models():
         'SVM': joblib.load('model_SVM.pkl'),
         'Logistic Regression': joblib.load('model_Logistic_Regression.pkl'),
         'Random Forest': joblib.load('model_Random_Forest.pkl'),
-        'K-Means': joblib.load('model_K_Means.pkl')
+        # แก้ตรงนี้: เปลี่ยนชื่อไฟล์ให้ตรงกับที่มีใน GitHub
+        'K-Means': joblib.load('model_summary.pkl') 
     }
     return m, joblib.load('scaler.pkl')
 
 try:
     models, scaler = load_models()
-except:
-    st.error("Error loading models. Please ensure all .pkl files are present.")
+except Exception as e:
+    st.error(f"Error loading models: {e}")
     st.stop()
 
 selected = st.sidebar.selectbox("เลือกโมเดล:", list(models.keys()))
@@ -49,6 +50,8 @@ with c2:
 
 if st.button("🔮 ทำนายผล", type="primary"):
     inp = np.array([[sl, sw, pl, pw]])
+    
+    # เช็คว่าโมเดลไหนต้องใช้ Scaler
     if selected in ['SVM', 'Logistic Regression', 'K-Means']:
         inp_s = scaler.transform(inp)
         pred = models[selected].predict(inp_s)
@@ -56,13 +59,18 @@ if st.button("🔮 ทำนายผล", type="primary"):
         pred = models[selected].predict(inp)
         
     res = pred[0]
+    
+    # แปลงผลลัพธ์ K-Means ให้เป็นชื่อดอกไม้
     if selected == 'K-Means':
         cmap = {0: 'Iris-setosa', 1: 'Iris-versicolor', 2: 'Iris-virginica'}
-        res = cmap.get(pred[0], 'Unknown')
+        res = cmap.get(int(pred[0]), 'Unknown')
         
     st.success(f"ผลลัพธ์: **{res}**")
     
+    # แสดงกราฟความน่าจะเป็น (ยกเว้น K-Means)
     if hasattr(models[selected], 'predict_proba') and selected != 'K-Means':
-        prob = models[selected].predict_proba(inp_s if selected in ['SVM', 'Logistic Regression'] else inp)
+        # ต้องใช้ inp_s สำหรับ SVM/Logistic เพราะตอนเทรนใช้ข้อมูลสเกลแล้ว
+        data_to_predict = inp_s if selected in ['SVM', 'Logistic Regression'] else inp
+        prob = models[selected].predict_proba(data_to_predict)
         pdf = pd.DataFrame(prob, columns=['Setosa', 'Versicolor', 'Virginica']).T
         st.bar_chart(pdf)
