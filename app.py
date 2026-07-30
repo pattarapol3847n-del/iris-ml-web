@@ -3,7 +3,18 @@ import pandas as pd
 import numpy as np
 import joblib
 
-st.set_page_config(page_title="Iris ML Predictor", page_icon="🌸")
+# ================= ข้อมูลผู้พัฒนา (เพิ่มตามโจทย์) =================
+st.sidebar.markdown("---")
+st.sidebar.image("my_photo.jpg", width=150) # แสดงรูปที่อัปโหลดไว้
+st.sidebar.info("""
+**ผู้พัฒนา:** ภัทรพล แก้วแท้
+**รหัสนักศึกษา:** 664245029
+**หมู่เรียน:** 66/43
+""")
+st.sidebar.markdown("---")
+# ================================================================
+
+st.set_page_config(page_title="Iris ML Predictor", page_icon="")
 st.title("🌸 ทำนายสายพันธุ์ดอกไม้ Iris")
 
 @st.cache_resource
@@ -34,7 +45,7 @@ with c2:
     pl = st.slider("Petal Length", 1.0, 7.0, 4.0, 0.1)
     pw = st.slider("Petal Width", 0.1, 2.6, 1.5, 0.1)
 
-if st.button(" ทำนายผล", type="primary"):
+if st.button("🔮 ทำนายผล", type="primary"):
     inp = np.array([[sl, sw, pl, pw]])
     if selected in ['SVM', 'Logistic Regression', 'K-Means']:
         inp_s = scaler.transform(inp)
