@@ -7,16 +7,14 @@ from sklearn.cluster import KMeans # เพิ่มบรรทัดนี้�
 # ================= ข้อมูลผู้พัฒนา =================
 st.sidebar.markdown("---")
 st.sidebar.image("my_photo.jpg", width=150)
-st.sidebar.info("""
-**ผู้พัฒนา:** ภัทรพล แก้วแท้
-**รหัสนักศึกษา:** 664245029
-**หมู่เรียน:** 66/43
-""")
+st.sidebar.markdown("**ผู้พัฒนา:** ภัทรพล แก้วแท้")
+st.sidebar.markdown("**รหัสนักศึกษา:** 664245029")
+st.sidebar.markdown("**หมู่เรียน:** 66/43")
 st.sidebar.markdown("---")
 # ================================================
 
 st.set_page_config(page_title="Iris ML Predictor", page_icon="🌸")
-st.title("🌸 ทำนายสายพันธุ์ดอกไม้ Iris")
+st.title(" ทำนายสายพันธุ์ดอกไม้ Iris")
 
 @st.cache_resource
 def load_models():
